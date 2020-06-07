@@ -683,6 +683,17 @@ class ClockDialog : Core::Group
     preset Bounds = <280,240,510,380>;
   }
 
+  $rect <0,490,200,530>
+  slot UpdateSlot
+  {
+    sender; /* the method is called from the sender object */
+
+    //UpdateDialog = new Application::UpdateClockDialog;
+    //UpdateDialog.CloseSlot = CloseUpdateDialogSlot;
+
+    //PresentDialog(UpdateDialog, null, null, null, null, null, null, null, null, false);
+  }
+
   $rect <380,620,580,660>
   method void UpdateClock()
   {
@@ -696,40 +707,17 @@ class ClockDialog : Core::Group
     DateComponent.SetMonth( dt.Month );
   }
 
+  $rect <0,530,200,570>
+  slot CloseUpdateDialogSlot
+  {
+    //DismissDialog(UpdateDialog, null, null, null, null, null, false);
+  }
+
   // 100 ms timer for getting clock and date updates
   note legend Note
   {
     attr Bounds = <200,600,380,680>;
   }
-
-  $rect <10,490,210,530>
-  slot UpdateSlot
-  {
-    sender; /* the method is called from the sender object */
-
-    UpdateDialog = new Application::UpdateClockDialog;
-    UpdateDialog.CloseSlot = CloseUpdateDialogSlot;
-
-    PresentDialog(UpdateDialog, null, null, null, null, null, null, null, null, false);
-  }
-
-  $rect <10,530,210,570>
-  slot CloseUpdateDialogSlot
-  {
-    DismissDialog(UpdateDialog, null, null, null, null, null, false);
-  }
-
-  $rect <20,20,160,60>
-  object WidgetSet::PushButton PushButton
-  {
-    preset Bounds = <0,380,210,480>;
-    preset OnPress = UpdateSlot;
-    preset Label = "Update";
-    preset Appearance = WidgetSet::PushButton_Large;
-  }
-
-  $rect <270,490,470,530>
-  var Application::UpdateClockDialog UpdateDialog;
 }
 
 // Device interface
@@ -765,19 +753,6 @@ class DeviceClass : Templates::DeviceClass
 
     return dt;
 
-  }
-
-  $rect <40,70,240,110>
-  method void setDateTime( arg Application::DateTime dt )
-  {
-    $if(!$prototyper)
-    native (dt)
-    {
-      extern void clock_setDateTime( ApplicationDateTime );
-
-      clock_setDateTime(dt);
-    }
-    $endif
   }
 }
 

@@ -4,3 +4,7 @@ Application/GeneratedCode/
 Application/Project/GCC/Obj/
 
 Application/Project/GCC/Bin/
+
+EmbeddedWizard_Project/STM32F469/
+
+.vscode/
