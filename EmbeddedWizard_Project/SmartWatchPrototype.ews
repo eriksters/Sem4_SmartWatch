@@ -1,11 +1,12 @@
 $version 1.0
 
+attr active = Application;
 attr callStackMonitor_Show = false;
 attr codeColSelect = false;
 attr codeFirstPos = <0,0>;
 attr codeSelEnd = <0,0>;
 attr codeSelStart = <0,0>;
-attr connectInspectors = false;
+attr connectInspectors = true;
 attr debug_TrackUpdates = false;
 attr extractDoc_ClassOverview = true;
 attr extractDoc_Destination = ./HtmlDoc;
@@ -43,6 +44,22 @@ view unit Application
 }
 
 view class Application::Application
+{
+  attr enableGrid = true;
+  attr grid = 10;
+  attr scrollTo = <-7,-7>;
+  attr zoom = 1.0;
+}
+
+view class Application::ClockComponent
+{
+  attr enableGrid = true;
+  attr grid = 10;
+  attr scrollTo = <-7,-7>;
+  attr zoom = 1.0;
+}
+
+view class Application::DateComponent
 {
   attr enableGrid = true;
   attr grid = 10;
