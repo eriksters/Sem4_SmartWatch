@@ -1556,7 +1556,7 @@ class HeartRateDialog : Core::Group
   $rect <810,0,1010,40>
   inherited property Bounds = <0,0,800,480>;
 
-  $rect <10,660,210,700>
+  $rect <810,80,1010,120>
   inherited method UpdateLayout()
   {
     // Always invoke the inherited method.
@@ -1585,7 +1585,7 @@ class HeartRateDialog : Core::Group
     */
   }
 
-  $rect <10,620,210,660>
+  $rect <810,40,1010,80>
   inherited method UpdateViewState()
   {
     // Always invoke the inherited method.

@@ -16,6 +16,13 @@ class Application : Core::Root
 
     PresentDialog(hrDialog, null, null, null, null, null, null, null, null, false);
   }
+
+  $rect <20,20,160,60>
+  object Views::Image Image
+  {
+    preset Bounds = <0,0,800,480>;
+    preset Bitmap = Application::Background;
+  }
 }
 
 // This is a font resource.
@@ -2129,6 +2136,18 @@ $output false
 resource Resources::Bitmap HeartPixelSmall
 {
   attr bitmapfile FileName = C:\Users\eriks\OneDrive\Att\U0113li\heart_pixel_small.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <230,640,430,680>
+$output false
+resource Resources::Bitmap Background
+{
+  attr bitmapfile FileName = E:\4th_Sem_Project\SmartWatchPrototype_rev1\Resources\darkbg.jpg;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;

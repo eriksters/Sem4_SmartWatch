@@ -1,12 +1,12 @@
 $version 1.0
 
-attr active = Application::HeartRateDialog;
+attr active = Application;
 attr callStackMonitor_Show = false;
 attr codeColSelect = false;
 attr codeFirstPos = <0,0>;
-attr codeInspector = Application::HeartRateDialog.UpdateLayout;
-attr codeSelEnd = <0,0>;
-attr codeSelStart = <0,0>;
+attr codeInspector = Application::Application.Init;
+attr codeSelEnd = <85,3>;
+attr codeSelStart = <85,3>;
 attr connectInspectors = false;
 attr debug_TrackUpdates = false;
 attr extractDoc_ClassOverview = true;
@@ -40,7 +40,7 @@ view unit Application
 {
   attr enableGrid = true;
   attr grid = 10;
-  attr scrollTo = <-7,-7>;
+  attr scrollTo = <-7,185>;
   attr zoom = 1.0;
 }
 
@@ -61,9 +61,9 @@ view class Application::HeartRateDialog
 {
   attr codeColSelect = false;
   attr codeFirstPos = <0,0>;
-  attr codeInspector = Slot;
-  attr codeSelEnd = <43,8>;
-  attr codeSelStart = <43,8>;
+  attr codeInspector = UpdateLayout;
+  attr codeSelEnd = <0,0>;
+  attr codeSelStart = <0,0>;
   attr enableGrid = true;
   attr grid = 10;
   attr scrollTo = <-7,-7>;
