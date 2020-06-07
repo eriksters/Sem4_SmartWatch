@@ -14,12 +14,12 @@ class Application : Core::Root
     //  var Application::ClockDialog clkDialog = new Application::ClockDialog;
     var Application::HeartRateDialog hrDialog = new Application::HeartRateDialog;
 
-    PresentDialog(clkDialog, null, null, null, null, null, null, null, null, false);
+    PresentDialog(hrDialog, null, null, null, null, null, null, null, null, false);
   }
 }
 
 // This is a font resource.
-$rect <30,450,230,490>
+$rect <30,560,230,600>
 $output false
 resource Resources::Font Font
 {
@@ -458,7 +458,7 @@ class DateComponent : Core::Group
   }
 }
 
-$rect <30,490,230,530>
+$rect <30,600,230,640>
 $output false
 resource Resources::Font ClockFont
 {
@@ -471,7 +471,7 @@ resource Resources::Font ClockFont
   attr fontitalic Italic = false;
 }
 
-$rect <30,530,230,570>
+$rect <30,640,230,680>
 $output false
 resource Resources::Font DateFont
 {
@@ -488,13 +488,13 @@ resource Resources::Font DateFont
 
 note group Note
 {
-  attr Bounds = <20,420,440,580>;
+  attr Bounds = <20,530,440,780>;
 }
 
 // Components
 note group Note1
 {
-  attr Bounds = <20,290,440,410>;
+  attr Bounds = <20,290,440,520>;
 }
 
 // Dialogs
@@ -1711,7 +1711,13 @@ class HeartRateDialog : Core::Group
     count = count + 1;
     $endif
 
-    HeartRateDisplayComponent.SetBPM( (int32) count );
+    HeartRateDisplayComponent.SetBPM( heartRate );
+  }
+
+  $rect <20,20,160,60>
+  object Application::HeartAnimationComponent HeartPixelComponent
+  {
+    preset Bounds = <290,20,530,260>;
   }
 }
 
@@ -1904,7 +1910,7 @@ class HeartRateDisplayComponent : Core::Group
   }
 }
 
-$rect <230,450,430,490>
+$rect <30,680,230,720>
 $output false
 resource Resources::Font HeartRateFont
 {
@@ -1915,4 +1921,217 @@ resource Resources::Font HeartRateFont
   attr fontaspectratio AspectRatio = 1.0;
   attr fontbold Bold = false;
   attr fontitalic Italic = false;
+}
+
+$rect <30,400,230,440>
+$output false
+class HeartAnimationComponent : Core::Group
+{
+  $rect <30,490,230,530>
+  inherited property Bounds = <0,0,240,240>;
+
+  $rect <30,650,230,690>
+  inherited method UpdateLayout()
+  {
+    // Always invoke the inherited method.
+    super( aSize );
+
+    /*
+
+      HINT:
+
+      This method exists for sophisticated layout calculation. Please note, that in 
+      most cases it is completely sufficient to use the views property 'Layout' to
+      determine how the view should behave when the component is resized.
+
+    */
+
+    /*
+
+      TO DO:
+
+      Put here the code to calculate new position and size of enclosed views. The
+      current (new) size of the component itself is passed in the parameter aSize.
+      For example:
+
+        SomeView.Bounds = rect( 10, 10, aSize.x - 20, aSize.y - 20 );
+
+    */
+  }
+
+  $rect <30,610,230,650>
+  inherited method UpdateViewState()
+  {
+    // Always invoke the inherited method.
+    super( aState );
+
+    /*
+
+      HINT 1:
+
+      This method is invoked automatically when the state set of the component has
+      been changed. The new state set can be found in the parameter aState.
+      Following are the important states:
+
+        Enabled   --> The component can react to user inputs.
+
+        Selected  --> The component is selected in context of its owner.
+
+        Focused   --> The component is selected in context of its owner and 
+                      the owner can react to keyboard events. In this manner the
+                      component is also able to react to keyboard events.
+
+        Modal     --> The component is modal. All events are redirected to this
+                      component.
+
+      To determine whether a state is currently active or not you have to test
+      the aState parameter. For example to test the 'Selected' state:
+
+        if ( aState.contains( Core::ViewState[ Selected ]))
+        {
+          ... yes, this component is currently selected.
+        }
+
+    */
+
+    /*
+
+      HINT 2:
+
+      Alternatively you can request this method invocation by executing explicitly
+      following code:
+
+
+        InvalidateViewState();
+
+    */
+      
+    /*
+
+      TO DO 1:
+
+      Put here the code to ensure that the visual aspect of the component does
+      reflect its current state. For example, depending on its 'Enabled' state
+      a component may appear with full colors or pale if it is disabled:
+
+        if ( aState.contains( Core::ViewState[ Enabled ]))
+        {
+          SomeBackgroundView.Opacity = 255;
+          SomeTextView.Color         = #000000FF;
+        }
+        else
+        {
+          SomeBackgroundView.Opacity = 128;
+          SomeTextView.Color         = #00000080;
+        }
+
+
+      TO DO 2:
+
+      You can evaluate here also the state of any other member in your component.
+      For example in a push-button component, the button should appear highlighted
+      as long as the user holds the finger within a touch area of the button:
+
+        if ( SomeTouchHandler.Down && SomeTouchHandler.Inside )
+          HighlightedBackground.Visible = true;
+        else
+          HighlightedBackground.Visible = false;
+
+      The touch handler itself only requests the update method to be called. Use
+      for this purpose 'InvalidateViewState()' method.
+
+
+      TO DO 3:
+
+      You can calculate here also the position/size of views accordingly to the
+      state of any other member in your component. For example in a slider you
+      can calculate the position of the slider knob from some properties like
+      'SliderValue' and 'SliderRange':
+
+        SliderKnob.Bounds.origin.x = ( SliderValue * Bounds.w ) / SliderRange;
+
+      Changing the 'SliderValue' or 'SliderRange' property should only request
+      the update method to be called. Use for this purpose 'InvalidateViewState()'
+      method.
+
+    */
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image HeartImageBig
+  {
+    preset Bounds = <0,0,240,240>;
+    preset Bitmap = Application::HeartPixelBig;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image HeartImageSmall
+  {
+    preset Bounds = <0,0,240,240>;
+    preset Bitmap = Application::HeartPixelSmall;
+    preset Visible = false;
+  }
+
+  $rect <0,260,200,300>
+  object Core::Timer HeartLongTimer
+  {
+    preset OnTrigger = HeartLongTimerSlot;
+    preset Period = 0;
+    preset Begin = 700;
+    preset Enabled = true;
+  }
+
+  $rect <0,300,200,340>
+  object Core::Timer HeartShortTimer
+  {
+    preset OnTrigger = HeartShortTimerSlot;
+    preset Period = 0;
+    preset Begin = 300;
+  }
+
+  $rect <230,260,430,300>
+  slot HeartLongTimerSlot
+  {
+    sender; /* the method is called from the sender object */
+
+    HeartImageBig.Visible = false;
+    HeartImageSmall.Visible = true;
+
+    HeartShortTimer.Enabled = true;
+  }
+
+  $rect <230,300,430,340>
+  slot HeartShortTimerSlot
+  {
+    sender; /* the method is called from the sender object */
+
+    HeartImageSmall.Visible = false;
+    HeartImageBig.Visible = true;
+
+    HeartLongTimer.Enabled = true;
+  }
+}
+
+$rect <230,560,430,600>
+$output false
+resource Resources::Bitmap HeartPixelBig
+{
+  attr bitmapfile FileName = C:\Users\eriks\OneDrive\Att\U0113li\heart_pixel_big.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <230,600,430,640>
+$output false
+resource Resources::Bitmap HeartPixelSmall
+{
+  attr bitmapfile FileName = C:\Users\eriks\OneDrive\Att\U0113li\heart_pixel_small.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
 }
