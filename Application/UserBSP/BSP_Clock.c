@@ -1,5 +1,6 @@
 #include "BSP_Clock.h"
 
+
 extern RTC_HandleTypeDef RtcHandle;
 
 void clock_init( void ) {

@@ -766,13 +766,13 @@ note group Note4
 }
 
 $rect <540,290,740,330>
-$output false
 class DateTime
 {
   $rect <0,0,200,40>
   property uint8 Month;
 
   $rect <0,40,200,80>
+  $output true
   property uint8 WeekDay;
 
   $rect <0,80,200,120>
@@ -786,4 +786,741 @@ class DateTime
 
   $rect <220,80,420,120>
   property uint8 Second;
+}
+
+$rect <230,140,430,180>
+$output false
+class UpdateClockDialog : Core::Group
+{
+  $rect <20,20,160,60>
+  object Views::Rectangle Rectangle
+  {
+    preset Bounds = <0,0,800,480>;
+    preset Color = #000000E0;
+  }
+
+  $rect <30,520,230,560>
+  inherited property Bounds = <0,0,800,480>;
+
+  $rect <30,610,230,650>
+  inherited method UpdateLayout()
+  {
+    // Always invoke the inherited method.
+    super( aSize );
+
+    /*
+
+      HINT:
+
+      This method exists for sophisticated layout calculation. Please note, that in 
+      most cases it is completely sufficient to use the views property 'Layout' to
+      determine how the view should behave when the component is resized.
+
+    */
+
+    /*
+
+      TO DO:
+
+      Put here the code to calculate new position and size of enclosed views. The
+      current (new) size of the component itself is passed in the parameter aSize.
+      For example:
+
+        SomeView.Bounds = rect( 10, 10, aSize.x - 20, aSize.y - 20 );
+
+    */
+  }
+
+  $rect <30,570,230,610>
+  inherited method UpdateViewState()
+  {
+    // Always invoke the inherited method.
+    super( aState );
+
+    /*
+
+      HINT 1:
+
+      This method is invoked automatically when the state set of the component has
+      been changed. The new state set can be found in the parameter aState.
+      Following are the important states:
+
+        Enabled   --> The component can react to user inputs.
+
+        Selected  --> The component is selected in context of its owner.
+
+        Focused   --> The component is selected in context of its owner and 
+                      the owner can react to keyboard events. In this manner the
+                      component is also able to react to keyboard events.
+
+        Modal     --> The component is modal. All events are redirected to this
+                      component.
+
+      To determine whether a state is currently active or not you have to test
+      the aState parameter. For example to test the 'Selected' state:
+
+        if ( aState.contains( Core::ViewState[ Selected ]))
+        {
+          ... yes, this component is currently selected.
+        }
+
+    */
+
+    /*
+
+      HINT 2:
+
+      Alternatively you can request this method invocation by executing explicitly
+      following code:
+
+
+        InvalidateViewState();
+
+    */
+      
+    /*
+
+      TO DO 1:
+
+      Put here the code to ensure that the visual aspect of the component does
+      reflect its current state. For example, depending on its 'Enabled' state
+      a component may appear with full colors or pale if it is disabled:
+
+        if ( aState.contains( Core::ViewState[ Enabled ]))
+        {
+          SomeBackgroundView.Opacity = 255;
+          SomeTextView.Color         = #000000FF;
+        }
+        else
+        {
+          SomeBackgroundView.Opacity = 128;
+          SomeTextView.Color         = #00000080;
+        }
+
+
+      TO DO 2:
+
+      You can evaluate here also the state of any other member in your component.
+      For example in a push-button component, the button should appear highlighted
+      as long as the user holds the finger within a touch area of the button:
+
+        if ( SomeTouchHandler.Down && SomeTouchHandler.Inside )
+          HighlightedBackground.Visible = true;
+        else
+          HighlightedBackground.Visible = false;
+
+      The touch handler itself only requests the update method to be called. Use
+      for this purpose 'InvalidateViewState()' method.
+
+
+      TO DO 3:
+
+      You can calculate here also the position/size of views accordingly to the
+      state of any other member in your component. For example in a slider you
+      can calculate the position of the slider knob from some properties like
+      'SliderValue' and 'SliderRange':
+
+        SliderKnob.Bounds.origin.x = ( SliderValue * Bounds.w ) / SliderRange;
+
+      Changing the 'SliderValue' or 'SliderRange' property should only request
+      the update method to be called. Use for this purpose 'InvalidateViewState()'
+      method.
+
+    */
+  }
+
+  $rect <810,0,1010,40>
+  inherited method Init()
+  {
+    var Application::DateTime dt = Application::Device.getDateTime();
+
+    Hour = dt.Hour;
+    Minute = dt.Minute;
+    Second = dt.Second;
+
+    Date = dt.Date;
+    Month = dt.Month;
+
+    DateComponent.SetDate( dt.Date );
+    DateComponent.SetMonth( dt.Month );
+
+    ClockComponent.SetHour( dt.Hour );
+    ClockComponent.SetMinute( dt.Minute );
+    ClockComponent.SetSecond( dt.Second );
+  }
+
+  $rect <20,20,160,60>
+  object Application::ClockComponent ClockComponent
+  {
+    preset Bounds = <-10,100,580,310>;
+  }
+
+  $rect <20,20,160,60>
+  object Application::DateComponent DateComponent
+  {
+    preset Bounds = <560,140,800,280>;
+  }
+
+  // This autoobject provides the default customization for the 'push button' widget \
+  // (WidgetSet::PushButton) in its large size variant.
+  $rect <1430,60,1730,100>
+  object WidgetSet::PushButtonConfig PushButton_Large
+  {
+    preset LabelColorActive = #FFFFFFFF;
+    preset LabelColorFocused = #FFFFFFFF;
+    preset LabelColorDisabled = #A8ABABFF;
+    preset LabelColorDefault = #6C6E70FF;
+    preset LabelMarginBottom = 9;
+    preset LabelMarginTop = 9;
+    preset LabelMarginRight = 9;
+    preset LabelMarginLeft = 9;
+    preset IconTintDisabled = #A8ABABAA;
+    preset IconTintDefault = #6C6E70FF;
+    preset IconMarginBottom = 9;
+    preset IconMarginTop = 9;
+    preset IconMarginRight = 9;
+    preset IconMarginLeft = 9;
+    preset LabelFont = Resources::FontLarge;
+    preset FaceFrameActive = 3;
+    preset FaceFrameFocused = 2;
+    preset FaceFrameDisabled = 0;
+    preset FaceFrameDefault = 1;
+    preset FaceActive = WidgetSet::PushButtonLarge;
+    preset FaceFocused = WidgetSet::PushButtonLarge;
+    preset FaceDisabled = WidgetSet::PushButtonLarge;
+    preset FaceDefault = WidgetSet::PushButtonLarge;
+    preset WidgetMinSize = <51,51>;
+  }
+
+  $rect <20,20,160,60>
+  object Application::PushButtonArr PushButtonArr
+  {
+    preset Bounds = <20,30,160,140>;
+    preset OnPress = HourUpSlot;
+  }
+
+  $rect <20,20,160,60>
+  object Application::PushButtonArr PushButtonArr1
+  {
+    preset Bounds = <220,30,360,140>;
+    preset OnPress = MinuteUpSlot;
+  }
+
+  $rect <20,20,160,60>
+  object Application::PushButtonArr PushButtonArr2
+  {
+    preset Bounds = <420,30,560,140>;
+    preset OnPress = SecondUpSlot;
+  }
+
+  $rect <20,20,160,60>
+  object Application::PushButtonArr PushButtonArr3
+  {
+    preset Bounds = <20,260,160,370>;
+    preset direction = 2;
+    preset OnPress = HourDownSlot;
+  }
+
+  $rect <20,20,160,60>
+  object Application::PushButtonArr PushButtonArr4
+  {
+    preset Bounds = <220,260,360,370>;
+    preset direction = 2;
+    preset OnPress = MinuteDownSlot;
+  }
+
+  $rect <20,20,160,60>
+  object Application::PushButtonArr PushButtonArr5
+  {
+    preset Bounds = <420,260,560,370>;
+    preset direction = 2;
+    preset OnPress = SecondDownSlot;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton SaveButton
+  {
+    preset Bounds = <0,380,400,480>;
+    preset OnPress = SaveButtonSlot;
+    preset Label = "Save";
+    preset Appearance = WidgetSet::PushButton_Large;
+  }
+
+  $rect <260,520,460,560>
+  var uint8 Hour;
+
+  $rect <260,560,460,600>
+  var uint8 Minute;
+
+  $rect <260,600,460,640>
+  var uint8 Second;
+
+  $rect <470,520,670,560>
+  var uint8 Date;
+
+  $rect <470,560,670,600>
+  var uint8 Month;
+
+  $rect <30,710,230,750>
+  slot HourUpSlot
+  {
+    sender; /* the method is called from the sender object */
+
+    Hour = Hour + 1;
+
+    if (Hour > 23) {
+      Hour = 0;
+    }
+
+    ClockComponent.SetHour( (uint8)Hour );
+  }
+
+  $rect <250,710,450,750>
+  slot MinuteUpSlot
+  {
+    sender; /* the method is called from the sender object */
+
+    Minute = Minute + 1;
+
+    if (Minute > 59) {
+      Minute = 0;
+    }
+
+    ClockComponent.SetMinute( (uint8) Minute );
+  }
+
+  $rect <470,710,670,750>
+  slot SecondUpSlot
+  {
+    sender; /* the method is called from the sender object */
+
+    Second = Second + 1;
+
+    if (Second > 59) {
+      Second = 0;
+    }
+
+    ClockComponent.SetSecond( (uint8) Second );
+  }
+
+  $rect <30,750,230,790>
+  slot HourDownSlot
+  {
+    sender; /* the method is called from the sender object */
+
+    Hour = Hour - 1;
+
+    if (Hour > 23) {
+      Hour = 23;
+    }
+
+    ClockComponent.SetHour( (uint8)Hour );
+  }
+
+  $rect <250,750,450,790>
+  slot MinuteDownSlot
+  {
+    sender; /* the method is called from the sender object */
+
+    Minute = Minute - 1;
+
+    if (Minute > 59) {
+      Minute = 59;
+    }
+
+    ClockComponent.SetMinute( (uint8) Minute );
+  }
+
+  $rect <470,750,670,790>
+  slot SecondDownSlot
+  {
+    sender; /* the method is called from the sender object */
+
+    Second = Second - 1;
+
+    if (Second > 59) {
+      Second = 59;
+    }
+
+    ClockComponent.SetSecond( (uint8) Second );
+  }
+
+  $rect <720,520,920,560>
+  slot SaveButtonSlot
+  {
+    var Application::DateTime dt = new Application::DateTime;
+
+    dt.Month = Month;
+    dt.WeekDay = 1;
+    dt.Date = Date;
+
+    dt.Hour = Hour;
+    dt.Minute = Minute;
+    dt.Second = Second;
+
+    Application::Device.setDateTime( dt );
+
+    signal CloseSlot;
+  }
+
+  $rect <720,600,920,640>
+  property slot CloseSlot;
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton CancelButton
+  {
+    preset Bounds = <400,380,800,480>;
+    preset OnPress = CloseButtonSlot;
+    preset Label = "Cancel";
+    preset Appearance = WidgetSet::PushButton_Large;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton PushButton
+  {
+    preset Bounds = <590,50,690,140>;
+    preset OnPress = DateUpSlot;
+    preset Label = "";
+    preset Appearance = WidgetSet::PushButton_Medium;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton PushButton1
+  {
+    preset Bounds = <690,50,790,140>;
+    preset OnPress = MonthUpSlot;
+    preset Label = "";
+    preset Appearance = WidgetSet::PushButton_Medium;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton PushButton2
+  {
+    preset Bounds = <590,260,690,350>;
+    preset OnPress = DateDownSlot;
+    preset Label = "";
+    preset Appearance = WidgetSet::PushButton_Medium;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton PushButton3
+  {
+    preset Bounds = <690,260,790,350>;
+    preset OnPress = MonthDownSlot;
+    preset Label = "";
+    preset Appearance = WidgetSet::PushButton_Medium;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Image
+  {
+    preset Bounds = <615,71,665,121>;
+    preset Bitmap = Resources::NavigationIconsLarge;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Image2
+  {
+    preset Bounds = <614,280,664,330>;
+    preset FrameNumber = 1;
+    preset Bitmap = Resources::NavigationIconsLarge;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Image3
+  {
+    preset Bounds = <715,70,765,120>;
+    preset Bitmap = Resources::NavigationIconsLarge;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Image4
+  {
+    preset Bounds = <716,281,766,331>;
+    preset FrameNumber = 1;
+    preset Bitmap = Resources::NavigationIconsLarge;
+  }
+
+  $rect <30,830,230,870>
+  slot DateUpSlot
+  {
+    sender; /* the method is called from the sender object */
+
+    Date = Date + 1;
+
+    if (Month == 2 && Date > 29) {
+      Date = 1;
+    }
+
+    if (Date > 31) {
+      Date = 1;
+    }
+
+
+    DateComponent.SetDate( (uint8)Date );
+  }
+
+  $rect <30,870,230,910>
+  slot DateDownSlot
+  {
+    sender; /* the method is called from the sender object */
+
+    Date = Date - 1;
+
+    if (Date < 1) {
+      if (Month == 2) {
+        Date = 29;
+      } else {
+        Date = 31;
+      }
+    }
+
+    DateComponent.SetDate( (uint8)Date );
+  }
+
+  $rect <250,830,450,870>
+  slot MonthUpSlot
+  {
+    sender; /* the method is called from the sender object */
+
+    Month = Month + 1;
+
+    if (Month > 12) {
+      Month = 1;
+    }
+
+    DateComponent.SetMonth( (uint8)Month );
+  }
+
+  $rect <250,870,450,910>
+  slot MonthDownSlot
+  {
+    sender; /* the method is called from the sender object */
+
+    Month = Month - 1;
+
+    if (Month < 1) {
+      Month = 12;
+    }
+
+    DateComponent.SetMonth( (uint8)Month );
+  }
+
+  $rect <720,560,920,600>
+  slot CloseButtonSlot
+  {
+    signal CloseSlot;
+  }
+
+  $reorder Rectangle 94
+}
+
+$rect <230,230,430,270>
+$output false
+class PushButtonArr : Core::Group
+{
+  $rect <10,230,210,270>
+  inherited property Bounds = <0,0,140,110>;
+
+  $rect <10,390,210,430>
+  inherited method UpdateLayout()
+  {
+    // Always invoke the inherited method.
+    super( aSize );
+
+    /*
+
+      HINT:
+
+      This method exists for sophisticated layout calculation. Please note, that in 
+      most cases it is completely sufficient to use the views property 'Layout' to
+      determine how the view should behave when the component is resized.
+
+    */
+
+    /*
+
+      TO DO:
+
+      Put here the code to calculate new position and size of enclosed views. The
+      current (new) size of the component itself is passed in the parameter aSize.
+      For example:
+
+        SomeView.Bounds = rect( 10, 10, aSize.x - 20, aSize.y - 20 );
+
+    */
+  }
+
+  $rect <10,350,210,390>
+  inherited method UpdateViewState()
+  {
+    // Always invoke the inherited method.
+    super( aState );
+
+    if (direction == 1) 
+    {
+      Arrow.FrameNumber = 3;
+    } else if (direction == 2) 
+    {
+      Arrow.FrameNumber = 1;
+    } else if (direction == 3) 
+    {
+      Arrow.FrameNumber = 2;
+    } else 
+    {
+      Arrow.FrameNumber = 0;
+    }
+
+    /*
+
+      HINT 1:
+
+      This method is invoked automatically when the state set of the component has
+      been changed. The new state set can be found in the parameter aState.
+      Following are the important states:
+
+        Enabled   --> The component can react to user inputs.
+
+        Selected  --> The component is selected in context of its owner.
+
+        Focused   --> The component is selected in context of its owner and 
+                      the owner can react to keyboard events. In this manner the
+                      component is also able to react to keyboard events.
+
+        Modal     --> The component is modal. All events are redirected to this
+                      component.
+
+      To determine whether a state is currently active or not you have to test
+      the aState parameter. For example to test the 'Selected' state:
+
+        if ( aState.contains( Core::ViewState[ Selected ]))
+        {
+          ... yes, this component is currently selected.
+        }
+
+    */
+
+    /*
+
+      HINT 2:
+
+      Alternatively you can request this method invocation by executing explicitly
+      following code:
+
+
+        InvalidateViewState();
+
+    */
+      
+    /*
+
+      TO DO 1:
+
+      Put here the code to ensure that the visual aspect of the component does
+      reflect its current state. For example, depending on its 'Enabled' state
+      a component may appear with full colors or pale if it is disabled:
+
+        if ( aState.contains( Core::ViewState[ Enabled ]))
+        {
+          SomeBackgroundView.Opacity = 255;
+          SomeTextView.Color         = #000000FF;
+        }
+        else
+        {
+          SomeBackgroundView.Opacity = 128;
+          SomeTextView.Color         = #00000080;
+        }
+
+
+      TO DO 2:
+
+      You can evaluate here also the state of any other member in your component.
+      For example in a push-button component, the button should appear highlighted
+      as long as the user holds the finger within a touch area of the button:
+
+        if ( SomeTouchHandler.Down && SomeTouchHandler.Inside )
+          HighlightedBackground.Visible = true;
+        else
+          HighlightedBackground.Visible = false;
+
+      The touch handler itself only requests the update method to be called. Use
+      for this purpose 'InvalidateViewState()' method.
+
+
+      TO DO 3:
+
+      You can calculate here also the position/size of views accordingly to the
+      state of any other member in your component. For example in a slider you
+      can calculate the position of the slider knob from some properties like
+      'SliderValue' and 'SliderRange':
+
+        SliderKnob.Bounds.origin.x = ( SliderValue * Bounds.w ) / SliderRange;
+
+      Changing the 'SliderValue' or 'SliderRange' property should only request
+      the update method to be called. Use for this purpose 'InvalidateViewState()'
+      method.
+
+    */
+  }
+
+  $rect <10,270,210,310>
+  inherited method Init()
+  {
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton PushButton
+  {
+    preset Bounds = <0,0,140,110>;
+    preset Label = "";
+    preset Appearance = WidgetSet::PushButton_Medium;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Arrow
+  {
+    preset Bounds = <0,0,140,110>;
+    preset Bitmap = Resources::NavigationIconsExtraLarge;
+  }
+
+  $rect <240,230,440,270>
+  property int32 direction = 0;
+
+  $rect <240,270,440,310>
+  onset direction
+  {
+    // The value doesn't change - nothing to do.
+    if ( pure direction == value )
+      return;
+
+    // Remember the property's new value.
+    pure direction = value;
+
+
+  }
+
+  $rect <250,350,450,390>
+  property slot OnPress;
+
+  $rect <250,390,450,430>
+  onset OnPress
+  {
+    // The value doesn't change - nothing to do.
+    if ( pure OnPress == value )
+      return;
+
+    // Remember the property's new value.
+    pure OnPress = value;
+    PushButton.OnPress = OnPress;
+
+    // TO DO:
+    // 
+    // Now you can handle the alternation of the property.
+  }
+
+  $rect <250,430,450,470>
+  onget OnPress
+  {
+    return pure OnPress;
+  }
 }

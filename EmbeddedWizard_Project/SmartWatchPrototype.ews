@@ -1,12 +1,12 @@
 $version 1.0
 
-attr active = Application::DateTime;
+attr active = Application::ClockComponent;
 attr callStackMonitor_Show = false;
 attr codeColSelect = false;
 attr codeFirstPos = <0,0>;
-attr codeInspector = Application::DeviceClass.getDateTime;
-attr codeSelEnd = <31,0>;
-attr codeSelStart = <31,0>;
+attr codeInspector = Application::DeviceClass.setDateTime;
+attr codeSelEnd = <0,0>;
+attr codeSelStart = <0,0>;
 attr connectInspectors = false;
 attr debug_TrackUpdates = false;
 attr extractDoc_ClassOverview = true;
@@ -64,9 +64,9 @@ view class Application::DeviceClass
 {
   attr codeColSelect = false;
   attr codeFirstPos = <0,0>;
-  attr codeInspector = getDateTime;
-  attr codeSelEnd = <31,0>;
-  attr codeSelStart = <31,0>;
+  attr codeInspector = setDateTime;
+  attr codeSelEnd = <0,0>;
+  attr codeSelStart = <0,0>;
   attr enableGrid = true;
   attr grid = 10;
   attr scrollTo = <-7,-7>;
@@ -77,24 +77,11 @@ view class Application::ClockDialog
 {
   attr codeColSelect = false;
   attr codeFirstPos = <0,0>;
-  attr codeInspector = UpdateClock;
-  attr codeSelEnd = <35,7>;
-  attr codeSelStart = <35,7>;
+  attr codeInspector = CloseUpdateDialogSlot;
+  attr codeSelEnd = <0,0>;
+  attr codeSelStart = <65,0>;
   attr enableGrid = true;
   attr grid = 10;
-  attr scrollTo = <-7,-7>;
+  attr scrollTo = <-7,185>;
   attr zoom = 1.0;
-}
-
-view class Application::DateTime
-{
-  attr enableGrid = true;
-  attr grid = 10;
-  attr scrollTo = <-7,-7>;
-  attr zoom = 1.0;
-}
-
-breakpoints
-{
-  Application::ClockDialog.CloseUpdateDialogSlot 1;
 }
