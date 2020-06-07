@@ -8,6 +8,14 @@ class Application : Core::Root
   $rect <820,0,1020,40>
   inherited property Bounds = <0,0,800,480>;
 
+  $rect <820,40,1020,80>
+  inherited method Init()
+  {
+    var Application::ClockDialog clkDialog = new Application::ClockDialog;
+
+    PresentDialog(clkDialog, null, null, null, null, null, null, null, null, false);
+  }
+
   // To do:
   // 
   // - The simplest way to compose the appearance of the application is to use the \
@@ -27,23 +35,6 @@ class Application : Core::Root
   note legend Note1
   {
     attr Bounds = <10,500,790,700>;
-  }
-
-  // This is a filled rectangle view.
-  $rect <20,20,160,60>
-  object Views::Rectangle Rectangle
-  {
-    preset Bounds = <0,0,800,480>;
-    preset Color = #000000FF;
-  }
-
-  // This is an ordinary text view.
-  $rect <20,20,160,60>
-  object Views::Text Text
-  {
-    preset Bounds = <350,220,460,250>;
-    preset String = "Hello!";
-    preset Font = Application::Font;
   }
 }
 
@@ -683,16 +674,7 @@ class ClockDialog : Core::Group
   $rect <0,640,200,680>
   slot TimerSlot
   {
-    //UpdateClock();
-
-    //var Application::DateTime dt = Application::Device.getDateTime();
-
-    //ClockComponent.SetHour( dt.Hour );
-    //ClockComponent.SetMinute( dt.Minute );
-    //ClockComponent.SetSecond( dt.Second );
-
-    //DateComponent.SetDate( dt.Date );
-    //DateComponent.SetMonth( dt.Month );
+    UpdateClock();
   }
 
   $rect <20,20,160,60>
@@ -712,23 +694,96 @@ class ClockDialog : Core::Group
     //PresentDialog(UpdateDialog, null, null, null, null, null, null, null, null, false);
   }
 
-  $rect <0,680,200,720>
+  $rect <380,620,580,660>
   method void UpdateClock()
   {
-    //var Application::DateTime dt = Application::Device.getDateTime();
+    var Application::DateTime dt = Application::Device.getDateTime();
 
-    //ClockComponent.SetHour( dt.Hour );
-    //ClockComponent.SetMinute( dt.Minute );
-    //ClockComponent.SetSecond( dt.Second );
+    ClockComponent.SetHour( dt.Hour );
+    ClockComponent.SetMinute( dt.Minute );
+    ClockComponent.SetSecond( dt.Second );
 
-    //DateComponent.SetDate( dt.Date );
-    //DateComponent.SetMonth( dt.Month );
-
+    DateComponent.SetDate( dt.Date );
+    DateComponent.SetMonth( dt.Month );
   }
 
   $rect <0,530,200,570>
   slot CloseUpdateDialogSlot
   {
-    DismissDialog(UpdateDialog, null, null, null, null, null, false);
+    //DismissDialog(UpdateDialog, null, null, null, null, null, false);
   }
+
+  // 100 ms timer for getting clock and date updates
+  note legend Note
+  {
+    attr Bounds = <200,600,380,680>;
+  }
+}
+
+// Device interface
+note group Note3
+{
+  attr Bounds = <530,110,750,240>;
+}
+
+$rect <540,150,740,190>
+$output false
+class DeviceClass : Templates::DeviceClass
+{
+  $rect <40,30,240,70>
+  method Application::DateTime getDateTime()
+  {
+    var Application::DateTime dt = new Application::DateTime;
+
+    $if (!$prototyper)
+    native (dt)
+    {
+      extern void clock_getDateTime( ApplicationDateTime );
+
+      clock_getDateTime( dt );
+    }
+    $else
+    dt.Date = 1;
+    dt.WeekDay = 5;
+    dt.Month = 5;
+    dt.Hour = 8;
+    dt.Minute = 44;
+    dt.Second = 50;
+    $endif
+
+    return dt;
+
+  }
+}
+
+$rect <540,190,740,230>
+autoobject Application::DeviceClass Device;
+
+// Data classes
+note group Note4
+{
+  attr Bounds = <530,250,750,340>;
+}
+
+$rect <540,290,740,330>
+class DateTime
+{
+  $rect <0,0,200,40>
+  property uint8 Month;
+
+  $rect <0,40,200,80>
+  $output true
+  property uint8 WeekDay;
+
+  $rect <0,80,200,120>
+  property uint8 Date;
+
+  $rect <220,0,420,40>
+  property uint8 Hour;
+
+  $rect <220,40,420,80>
+  property uint8 Minute;
+
+  $rect <220,80,420,120>
+  property uint8 Second;
 }

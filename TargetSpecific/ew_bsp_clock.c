@@ -77,7 +77,7 @@ const unsigned long DaysToMonthInLeapYear[] =
 static volatile unsigned long EmWiSystemTicks = 0;
 
 /* RTC handler declaration */
-static RTC_HandleTypeDef      RtcHandle;
+RTC_HandleTypeDef      RtcHandle;
 
 #if EW_CPU_LOAD_MEASURING == 1
 
