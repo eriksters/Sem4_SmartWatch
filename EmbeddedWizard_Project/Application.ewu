@@ -48,7 +48,7 @@ class Application : Core::Root
 }
 
 // This is a font resource.
-$rect <30,230,230,270>
+$rect <30,360,230,400>
 $output false
 resource Resources::Font Font
 {
@@ -61,7 +61,7 @@ resource Resources::Font Font
   attr fontitalic Italic = false;
 }
 
-$rect <30,100,230,140>
+$rect <30,230,230,270>
 $output false
 class ClockComponent : Core::Group
 {
@@ -295,7 +295,7 @@ class ClockComponent : Core::Group
   }
 }
 
-$rect <30,140,230,180>
+$rect <30,270,230,310>
 $output false
 class DateComponent : Core::Group
 {
@@ -487,7 +487,7 @@ class DateComponent : Core::Group
   }
 }
 
-$rect <30,270,230,310>
+$rect <30,400,230,440>
 $output false
 resource Resources::Font ClockFont
 {
@@ -500,7 +500,7 @@ resource Resources::Font ClockFont
   attr fontitalic Italic = false;
 }
 
-$rect <30,310,230,350>
+$rect <30,440,230,480>
 $output false
 resource Resources::Font DateFont
 {
@@ -517,11 +517,218 @@ resource Resources::Font DateFont
 
 note group Note
 {
-  attr Bounds = <20,200,500,360>;
+  attr Bounds = <20,330,500,490>;
 }
 
 // Components
 note group Note1
 {
-  attr Bounds = <20,70,500,190>;
+  attr Bounds = <20,200,500,320>;
+}
+
+// Dialogs
+note group Note2
+{
+  attr Bounds = <20,110,500,190>;
+}
+
+$rect <30,140,230,180>
+$output false
+class ClockDialog : Core::Group
+{
+  $rect <810,0,1010,40>
+  inherited property Bounds = <0,0,800,480>;
+
+  $rect <810,240,1010,280>
+  inherited method UpdateLayout()
+  {
+    // Always invoke the inherited method.
+    super( aSize );
+
+    /*
+
+      HINT:
+
+      This method exists for sophisticated layout calculation. Please note, that in 
+      most cases it is completely sufficient to use the views property 'Layout' to
+      determine how the view should behave when the component is resized.
+
+    */
+
+    /*
+
+      TO DO:
+
+      Put here the code to calculate new position and size of enclosed views. The
+      current (new) size of the component itself is passed in the parameter aSize.
+      For example:
+
+        SomeView.Bounds = rect( 10, 10, aSize.x - 20, aSize.y - 20 );
+
+    */
+  }
+
+  $rect <810,200,1010,240>
+  inherited method UpdateViewState()
+  {
+    // Always invoke the inherited method.
+    super( aState );
+
+    /*
+
+      HINT 1:
+
+      This method is invoked automatically when the state set of the component has
+      been changed. The new state set can be found in the parameter aState.
+      Following are the important states:
+
+        Enabled   --> The component can react to user inputs.
+
+        Selected  --> The component is selected in context of its owner.
+
+        Focused   --> The component is selected in context of its owner and 
+                      the owner can react to keyboard events. In this manner the
+                      component is also able to react to keyboard events.
+
+        Modal     --> The component is modal. All events are redirected to this
+                      component.
+
+      To determine whether a state is currently active or not you have to test
+      the aState parameter. For example to test the 'Selected' state:
+
+        if ( aState.contains( Core::ViewState[ Selected ]))
+        {
+          ... yes, this component is currently selected.
+        }
+
+    */
+
+    /*
+
+      HINT 2:
+
+      Alternatively you can request this method invocation by executing explicitly
+      following code:
+
+
+        InvalidateViewState();
+
+    */
+      
+    /*
+
+      TO DO 1:
+
+      Put here the code to ensure that the visual aspect of the component does
+      reflect its current state. For example, depending on its 'Enabled' state
+      a component may appear with full colors or pale if it is disabled:
+
+        if ( aState.contains( Core::ViewState[ Enabled ]))
+        {
+          SomeBackgroundView.Opacity = 255;
+          SomeTextView.Color         = #000000FF;
+        }
+        else
+        {
+          SomeBackgroundView.Opacity = 128;
+          SomeTextView.Color         = #00000080;
+        }
+
+
+      TO DO 2:
+
+      You can evaluate here also the state of any other member in your component.
+      For example in a push-button component, the button should appear highlighted
+      as long as the user holds the finger within a touch area of the button:
+
+        if ( SomeTouchHandler.Down && SomeTouchHandler.Inside )
+          HighlightedBackground.Visible = true;
+        else
+          HighlightedBackground.Visible = false;
+
+      The touch handler itself only requests the update method to be called. Use
+      for this purpose 'InvalidateViewState()' method.
+
+
+      TO DO 3:
+
+      You can calculate here also the position/size of views accordingly to the
+      state of any other member in your component. For example in a slider you
+      can calculate the position of the slider knob from some properties like
+      'SliderValue' and 'SliderRange':
+
+        SliderKnob.Bounds.origin.x = ( SliderValue * Bounds.w ) / SliderRange;
+
+      Changing the 'SliderValue' or 'SliderRange' property should only request
+      the update method to be called. Use for this purpose 'InvalidateViewState()'
+      method.
+
+    */
+  }
+
+  $rect <20,20,160,60>
+  object Application::ClockComponent ClockComponent
+  {
+    preset Bounds = <90,80,690,280>;
+  }
+
+  $rect <0,600,200,640>
+  object Core::Timer Timer
+  {
+    preset OnTrigger = TimerSlot;
+    preset Period = 100;
+    preset Enabled = true;
+  }
+
+  $rect <0,640,200,680>
+  slot TimerSlot
+  {
+    //UpdateClock();
+
+    //var Application::DateTime dt = Application::Device.getDateTime();
+
+    //ClockComponent.SetHour( dt.Hour );
+    //ClockComponent.SetMinute( dt.Minute );
+    //ClockComponent.SetSecond( dt.Second );
+
+    //DateComponent.SetDate( dt.Date );
+    //DateComponent.SetMonth( dt.Month );
+  }
+
+  $rect <20,20,160,60>
+  object Application::DateComponent DateComponent
+  {
+    preset Bounds = <280,240,510,380>;
+  }
+
+  $rect <0,490,200,530>
+  slot UpdateSlot
+  {
+    sender; /* the method is called from the sender object */
+
+    //UpdateDialog = new Application::UpdateClockDialog;
+    //UpdateDialog.CloseSlot = CloseUpdateDialogSlot;
+
+    //PresentDialog(UpdateDialog, null, null, null, null, null, null, null, null, false);
+  }
+
+  $rect <0,680,200,720>
+  method void UpdateClock()
+  {
+    //var Application::DateTime dt = Application::Device.getDateTime();
+
+    //ClockComponent.SetHour( dt.Hour );
+    //ClockComponent.SetMinute( dt.Minute );
+    //ClockComponent.SetSecond( dt.Second );
+
+    //DateComponent.SetDate( dt.Date );
+    //DateComponent.SetMonth( dt.Month );
+
+  }
+
+  $rect <0,530,200,570>
+  slot CloseUpdateDialogSlot
+  {
+    DismissDialog(UpdateDialog, null, null, null, null, null, false);
+  }
 }

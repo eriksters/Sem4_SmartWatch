@@ -1,12 +1,13 @@
 $version 1.0
 
-attr active = Application;
+attr active = Application::ClockDialog;
 attr callStackMonitor_Show = false;
 attr codeColSelect = false;
 attr codeFirstPos = <0,0>;
-attr codeSelEnd = <0,0>;
-attr codeSelStart = <0,0>;
-attr connectInspectors = true;
+attr codeInspector = Application::ClockDialog.TimerSlot;
+attr codeSelEnd = <2,9>;
+attr codeSelStart = <2,9>;
+attr connectInspectors = false;
 attr debug_TrackUpdates = false;
 attr extractDoc_ClassOverview = true;
 attr extractDoc_Destination = ./HtmlDoc;
@@ -65,4 +66,17 @@ view class Application::DateComponent
   attr grid = 10;
   attr scrollTo = <-7,-7>;
   attr zoom = 1.0;
+}
+
+view class Application::ClockDialog
+{
+  attr enableGrid = true;
+  attr grid = 10;
+  attr scrollTo = <-7,233>;
+  attr zoom = 1.0;
+}
+
+breakpoints
+{
+  Application::ClockDialog.CloseUpdateDialogSlot 1;
 }
