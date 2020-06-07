@@ -771,7 +771,7 @@ class DeviceClass : Templates::DeviceClass
     $if (!$prototyper)
     native (heartRate)
     {
-      extern int32_t heartRate_getHeartRate( void );
+      extern signed int heartRate_getHeartRate( void );
 
       heartRate = heartRate_getHeartRate();
     }

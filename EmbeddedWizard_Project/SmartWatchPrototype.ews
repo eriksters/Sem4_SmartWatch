@@ -1,12 +1,12 @@
 $version 1.0
 
-attr active = Application::DeviceClass;
+attr active = Application::Application;
 attr callStackMonitor_Show = false;
 attr codeColSelect = false;
-attr codeFirstPos = <0,1>;
-attr codeInspector = Application::DeviceClass.getHeartRate;
-attr codeSelEnd = <19,5>;
-attr codeSelStart = <19,5>;
+attr codeFirstPos = <0,0>;
+attr codeInspector = Application::Application.Init;
+attr codeSelEnd = <106,3>;
+attr codeSelStart = <106,3>;
 attr connectInspectors = false;
 attr debug_TrackUpdates = false;
 attr extractDoc_ClassOverview = true;
@@ -73,10 +73,10 @@ view class Application::HeartRateDialog
 view class Application::DeviceClass
 {
   attr codeColSelect = false;
-  attr codeFirstPos = <0,0>;
+  attr codeFirstPos = <0,1>;
   attr codeInspector = getHeartRate;
-  attr codeSelEnd = <27,7>;
-  attr codeSelStart = <27,7>;
+  attr codeSelEnd = <19,5>;
+  attr codeSelStart = <19,5>;
   attr enableGrid = true;
   attr grid = 10;
   attr scrollTo = <-7,-7>;
