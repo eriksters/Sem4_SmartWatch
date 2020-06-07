@@ -41,6 +41,7 @@
 #include "ewrte.h"
 #include "ew_bsp_system.h"
 #include "ew_bsp_console.h"
+#include "BSP_HeartRate.h"
 
 #if EW_USE_FREE_RTOS == 1
 
@@ -74,6 +75,8 @@ int main( void )
 {
   /* initialize system */
   EwBspSystemInit();
+
+  heartRate_init();
 
   /* initialize console interface for debug messages */
   EwBspConsoleInit();

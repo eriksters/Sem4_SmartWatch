@@ -2,7 +2,6 @@ $version 9.30
 
 // This is the root component of the entire GUI application.
 $rect <20,20,220,60>
-$output false
 class Application : Core::Root
 {
   $rect <820,0,1020,40>
@@ -40,7 +39,6 @@ resource Resources::Font Font
 }
 
 $rect <30,320,230,360>
-$output false
 class ClockComponent : Core::Group
 {
   $rect <10,230,210,270>
@@ -492,7 +490,6 @@ resource Resources::Font DateFont
 }
 
 // Resources
-
 note group Note
 {
   attr Bounds = <20,530,440,780>;
@@ -726,7 +723,6 @@ note group Note3
 }
 
 $rect <540,150,740,190>
-$output false
 class DeviceClass : Templates::DeviceClass
 {
   $rect <40,30,240,70>
@@ -775,9 +771,9 @@ class DeviceClass : Templates::DeviceClass
     $if (!$prototyper)
     native (heartRate)
     {
-      extern void heartRate_getHeartRate( void );
+      extern signed int heartRate_getHeartRate( void );
 
-      heartRate_getHeartRate();
+      heartRate = heartRate_getHeartRate();
     }
     $else
     heartRate = 80;
@@ -800,6 +796,7 @@ $rect <540,290,740,330>
 class DateTime
 {
   $rect <0,0,200,40>
+  $output true
   property uint8 Month;
 
   $rect <0,40,200,80>
@@ -807,15 +804,19 @@ class DateTime
   property uint8 WeekDay;
 
   $rect <0,80,200,120>
+  $output true
   property uint8 Date;
 
   $rect <220,0,420,40>
+  $output true
   property uint8 Hour;
 
   $rect <220,40,420,80>
+  $output true
   property uint8 Minute;
 
   $rect <220,80,420,120>
+  $output true
   property uint8 Second;
 }
 
@@ -2123,7 +2124,7 @@ $rect <230,560,430,600>
 $output false
 resource Resources::Bitmap HeartPixelBig
 {
-  attr bitmapfile FileName = C:\Users\eriks\OneDrive\Att\U0113li\heart_pixel_big.png;
+  attr bitmapfile FileName = E:\4th_Sem_Project\SmartWatchPrototype_rev1\Resources\heart_pixel_big.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2135,7 +2136,7 @@ $rect <230,600,430,640>
 $output false
 resource Resources::Bitmap HeartPixelSmall
 {
-  attr bitmapfile FileName = C:\Users\eriks\OneDrive\Att\U0113li\heart_pixel_small.png;
+  attr bitmapfile FileName = .\resources\heart_pixel_small.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
