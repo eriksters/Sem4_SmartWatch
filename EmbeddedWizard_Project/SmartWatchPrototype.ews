@@ -1,11 +1,12 @@
 $version 1.0
 
+attr active = Application::Application;
 attr callStackMonitor_Show = false;
 attr codeColSelect = false;
 attr codeFirstPos = <0,0>;
 attr codeInspector = Application::Application.Init;
-attr codeSelEnd = <16,3>;
-attr codeSelStart = <16,3>;
+attr codeSelEnd = <106,3>;
+attr codeSelStart = <106,3>;
 attr connectInspectors = false;
 attr debug_TrackUpdates = false;
 attr extractDoc_ClassOverview = true;
