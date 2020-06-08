@@ -124,7 +124,7 @@ profile STM32F469 : STM.STM32.RGB565
   attr CleanOutputDirectories = false;
   attr OutputFileNameExtension = c;
   attr Verbose = false;
-  attr OutputDirectory = E:\4th_Sem_Project\SmartWatchPrototype_rev1\Application\GeneratedCode;
+  attr OutputDirectory = ./../Application/GeneratedCode;
 
   $rect <10,10,154,50>
   macro Author = "Dipl. Ing. Paul Banach and Dipl. Ing. Manfred Schweyer, Copyright (C) TARA Systems GmbH";

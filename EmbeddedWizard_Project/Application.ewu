@@ -2124,7 +2124,7 @@ $rect <230,560,430,600>
 $output false
 resource Resources::Bitmap HeartPixelBig
 {
-  attr bitmapfile FileName = E:\4th_Sem_Project\SmartWatchPrototype_rev1\Resources\heart_pixel_big.png;
+  attr bitmapfile FileName = .\resources\heart_pixel_big.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2148,7 +2148,7 @@ $rect <230,640,430,680>
 $output false
 resource Resources::Bitmap Background
 {
-  attr bitmapfile FileName = E:\4th_Sem_Project\SmartWatchPrototype_rev1\Resources\darkbg.jpg;
+  attr bitmapfile FileName = .\resources\darkbg.jpg;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;

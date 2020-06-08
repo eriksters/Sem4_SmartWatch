@@ -4,7 +4,7 @@ rem ****************************************************************************
 rem Please set the ABSOLUTE installation path of the ST-LINK utility
 rem *************************************************************************************************
 
-set ST-LINK_Utility_Path=D:\ST_ToolChain\ST-LINK Utility
+set ST-LINK_Utility_Path=C:\ST_ToolChain\ST-LINK_Utility
 
 rem *************************************************************************************************
 rem Please do NOT change the following settings
