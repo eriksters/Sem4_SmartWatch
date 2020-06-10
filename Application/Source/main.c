@@ -76,14 +76,14 @@ int main( void )
   /* initialize system */
   EwBspSystemInit();
 
-  heartRate_init();
-
   /* initialize console interface for debug messages */
   EwBspConsoleInit();
 
   /* initialize Embedded Wizard application */
   if ( EwInit() == 0 )
     return 0;
+    
+  heartRate_init();
 
   EwPrintSystemInfo();
 

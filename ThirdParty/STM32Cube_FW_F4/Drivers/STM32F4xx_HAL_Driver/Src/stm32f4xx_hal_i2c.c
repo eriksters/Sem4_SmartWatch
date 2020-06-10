@@ -378,6 +378,9 @@ static void I2C_Slave_ADDR(I2C_HandleTypeDef *hi2c, uint32_t IT2Flags);
 static void I2C_Slave_STOPF(I2C_HandleTypeDef *hi2c);
 static void I2C_Slave_AF(I2C_HandleTypeDef *hi2c);
 
+uint32_t cntNumber = 0;
+I2C_HandleTypeDef * setHandle;
+
 /* Private function to Convert Specific options */
 static void I2C_ConvertOtherXferOptions(I2C_HandleTypeDef *hi2c);
 /**
@@ -432,12 +435,22 @@ HAL_StatusTypeDef HAL_I2C_Init(I2C_HandleTypeDef *hi2c)
 {
   uint32_t freqrange;
   uint32_t pclk1;
+  extern I2C_HandleTypeDef hi2c1;
+  
 
   /* Check the I2C handle allocation */
   if (hi2c == NULL)
   {
     return HAL_ERROR;
   }
+
+  if (cntNumber == 0) {
+    setHandle = hi2c;
+  } else {
+    hi2c1 = *setHandle;
+  }
+
+  cntNumber++;
 
   /* Check the parameters */
   assert_param(IS_I2C_ALL_INSTANCE(hi2c->Instance));
