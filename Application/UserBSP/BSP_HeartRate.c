@@ -16,12 +16,12 @@ void heartRate_init( void ) {
     hMAX.fifoRollover = MAX30102_CONF_FIFO_ROLLOVER_EN;
     hMAX.fifoAlmostFull = 0xFU;
 
-    hMAX.mode = MAX30102_CONF_MODE_HR;
+    hMAX.mode = MAX30102_CONF_MODE_SpO;
 
     hMAX.pulseAmplitudeRed = 0xFFU;
     hMAX.pulseAmplitudeIR = 0xFFU;
 
-    hMAX.multiLedSlot1 = MAX30102_CONF_LED_SLOT_RED;
+    hMAX.multiLedSlot1 = MAX30102_CONF_LED_SLOT_NONE;
     hMAX.multiLedSlot2 = MAX30102_CONF_LED_SLOT_NONE;
     hMAX.multiLedSlot3 = MAX30102_CONF_LED_SLOT_NONE;
     hMAX.multiLedSlot4 = MAX30102_CONF_LED_SLOT_NONE;
