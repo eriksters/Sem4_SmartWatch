@@ -244,6 +244,12 @@ HAL_StatusTypeDef HAL_RTC_Init(RTC_HandleTypeDef *hrtc)
      return HAL_ERROR;
   }
 
+  static count = 0;
+  if (count != 0) {
+    return HAL_OK;
+  }
+  count++;
+
   /* Check the parameters */
   assert_param(IS_RTC_HOUR_FORMAT(hrtc->Init.HourFormat));
   assert_param(IS_RTC_ASYNCH_PREDIV(hrtc->Init.AsynchPrediv));

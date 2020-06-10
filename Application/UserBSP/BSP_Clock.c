@@ -1,10 +1,32 @@
 #include "BSP_Clock.h"
 
-
-extern RTC_HandleTypeDef RtcHandle;
+RTC_HandleTypeDef Rtchandle;
 
 void clock_init( void ) {
-    //  initialized by EW
+    RTC_TimeTypeDef sTime = {0};
+    RTC_DateTypeDef sDate = {0};
+
+    Rtchandle.Instance = RTC;
+    Rtchandle.Init.HourFormat = RTC_HOURFORMAT_24;
+    Rtchandle.Init.AsynchPrediv = 127;
+    Rtchandle.Init.SynchPrediv = 255;
+    Rtchandle.Init.OutPut = RTC_OUTPUT_DISABLE;
+    Rtchandle.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+    Rtchandle.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
+    HAL_RTC_Init(&Rtchandle);
+
+    sTime.Hours = 0x23;
+    sTime.Minutes = 0x55;
+    sTime.Seconds = 0x30;
+    sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+    sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+    HAL_RTC_SetTime(&RtcHandle, &sTime, RTC_FORMAT_BCD);
+
+    sDate.WeekDay = RTC_WEEKDAY_WEDNESDAY;
+    sDate.Month = RTC_MONTH_JUNE;
+    sDate.Date = 0x10;
+    sDate.Year = 0x0;
+    HAL_RTC_SetDate(&RtcHandle, &sDate, RTC_FORMAT_BCD);
 }
 
 void clock_getDateTime( ApplicationDateTime pDT ) 

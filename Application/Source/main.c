@@ -42,6 +42,7 @@
 #include "ew_bsp_system.h"
 #include "ew_bsp_console.h"
 #include "BSP_HeartRate.h"
+#include "BSP_Clock.h"
 
 #if EW_USE_FREE_RTOS == 1
 
@@ -83,6 +84,7 @@ int main( void )
   if ( EwInit() == 0 )
     return 0;
     
+  clock_init();
   heartRate_init();
 
   EwPrintSystemInfo();
