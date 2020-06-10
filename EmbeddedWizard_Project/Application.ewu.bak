@@ -10,10 +10,11 @@ class Application : Core::Root
   $rect <820,40,1020,80>
   inherited method Init()
   {
-    //  var Application::ClockDialog clkDialog = new Application::ClockDialog;
-    var Application::HeartRateDialog hrDialog = new Application::HeartRateDialog;
+    dialogArray[0] = new Application::ClockDialog;
+    dialogArray[1] = new Application::HeartRateDialog;
 
-    PresentDialog(hrDialog, null, null, null, null, null, null, null, null, false);
+    SwitchToDialog( dialogArray[activeDialogIndex], null, null, null, null, null, null, null, null, null, false );
+
   }
 
   $rect <20,20,160,60>
@@ -21,6 +22,46 @@ class Application : Core::Root
   {
     preset Bounds = <0,0,800,480>;
     preset Bitmap = Application::Background;
+  }
+
+  $rect <0,490,200,530>
+  array Core::Group dialogArray[ 2 ];
+
+  $rect <0,530,200,570>
+  var int32 activeDialogIndex = 0;
+
+  $rect <240,490,440,530>
+  slot WipeRightHandler
+  {
+    trace "Swipe right";
+
+    activeDialogIndex = activeDialogIndex - 1;
+    if (activeDialogIndex < 0) {
+      activeDialogIndex = dialogArray.size - 1;
+    }
+
+    SwitchToDialog( dialogArray[activeDialogIndex], Effects::SlideRightCentered, null, null, null, Effects::SlideRightCentered, null, null, null, null, false);
+  }
+
+  $rect <240,530,440,570>
+  slot WipeLeftHandler
+  {
+    trace "Swipe left";
+
+    activeDialogIndex = activeDialogIndex + 1;
+    if (activeDialogIndex > dialogArray.size - 1) {
+      activeDialogIndex = 0;
+    }
+
+    SwitchToDialog( dialogArray[activeDialogIndex], Effects::SlideLeftCentered, null, null, null, Effects::SlideLeftCentered, null, null, null, null, false);
+  }
+
+  $rect <20,20,160,60>
+  object Core::WipeTouchHandler WipeTouchHandler
+  {
+    preset Bounds = <0,0,800,480>;
+    preset OnRight = WipeRightHandler;
+    preset OnLeft = WipeLeftHandler;
   }
 }
 
@@ -2124,7 +2165,7 @@ $rect <230,560,430,600>
 $output false
 resource Resources::Bitmap HeartPixelBig
 {
-  attr bitmapfile FileName = E:\4th_Sem_Project\SmartWatchPrototype_rev1\Resources\heart_pixel_big.png;
+  attr bitmapfile FileName = .\resources\heart_pixel_big.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -2148,7 +2189,7 @@ $rect <230,640,430,680>
 $output false
 resource Resources::Bitmap Background
 {
-  attr bitmapfile FileName = E:\4th_Sem_Project\SmartWatchPrototype_rev1\Resources\darkbg.jpg;
+  attr bitmapfile FileName = .\resources\darkbg.jpg;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;

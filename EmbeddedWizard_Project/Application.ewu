@@ -17,13 +17,6 @@ class Application : Core::Root
 
   }
 
-  $rect <20,20,160,60>
-  object Views::Image Image
-  {
-    preset Bounds = <0,0,800,480>;
-    preset Bitmap = Application::Background;
-  }
-
   $rect <0,490,200,530>
   array Core::Group dialogArray[ 2 ];
 
