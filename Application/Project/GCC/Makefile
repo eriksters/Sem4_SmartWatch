@@ -197,7 +197,7 @@ endif
 ###############################################################################
 # DEFINES
 ###############################################################################
-CFLAGS  = -O2 -Wall -mcpu=cortex-m4 -mlittle-endian -mthumb -g                 \
+CFLAGS  = -O0 -Wall -mcpu=cortex-m4 -mlittle-endian -mthumb -g                 \
           -mthumb-interwork -mfpu=fpv4-sp-d16 -mfloat-abi=hard                 \
           -ffunction-sections -fdata-sections                                  \
           -DUSE_HAL_DRIVER -DSTM32F469xx -DUSE_STM32F469I_DISCO                \
