@@ -164,6 +164,8 @@ int32_t MAX30102_calcHeartRate(uint16_t samplesPerSecond);
 
 uint8_t MAX30102_getAvailableSampleCount();
 
+void MAX30102_smooth(uint16_t lastAddedSampleAmount);
+
 uint32_t MAX30102_sampleToInt(MAX30102_DataSample sample);
 
 
@@ -176,3 +178,7 @@ void MAX30102_SampleBuffer_resetTail();
 void MAX30102_SampleBuffer_reverseTail(uint16_t amount);
 
 uint32_t MAX30102_SampleBuffer_readTail();
+
+void MAX30102_SampleBuffer_setTail(uint32_t toSet);
+
+uint32_t MAX30102_SampleBuffer_peek( void );

@@ -2,15 +2,15 @@
 
 I2C_HandleTypeDef * pI2C;
 
-struct testStruct {
-    uint8_t sampleCount;
-    uint8_t readPtr;
-    uint8_t writePtr;
-    uint8_t ofvCounter;
-};
+// struct testStruct {
+//     uint8_t sampleCount;
+//     uint8_t readPtr;
+//     uint8_t writePtr;
+//     uint8_t ofvCounter;
+// };
 
-struct testStruct testBuffer[50] = {0};
-uint32_t testBufferCounter = 0;
+// struct testStruct testBuffer[50] = {0};
+// uint32_t testBufferCounter = 0;
 
 //  Setup
 
@@ -156,16 +156,16 @@ int32_t MAX30102_getHeartRate() {
     uint16_t sampleRate = 25;
 
     uint8_t availableSampleCount;
-    MAX30102_DataSample * samples;
+    MAX30102_DataSample samples[32];
     uint32_t translatedSample;
 
     //  get how many new samples available
     availableSampleCount = MAX30102_getAvailableSampleCount();
 
-    testBuffer[testBufferCounter].sampleCount = availableSampleCount;
+    // testBuffer[testBufferCounter].sampleCount = availableSampleCount;
 
     //  allocate memory for samples
-    samples = (MAX30102_DataSample *) malloc(sizeof(MAX30102_DataSample) * availableSampleCount);
+    // samples = (MAX30102_DataSample *) malloc(sizeof(MAX30102_DataSample) * availableSampleCount);
 
     //  get available samples
     MAX30102_getData(samples, availableSampleCount);
@@ -176,35 +176,27 @@ int32_t MAX30102_getHeartRate() {
         MAX30102_SampleBuffer_add(translatedSample);
     }
 
-    free(samples);
+    //  Smooth the new data
+    MAX30102_smooth(availableSampleCount);
 
-    testBufferCounter++;
+    // free(samples);
+    // testBufferCounter++;
 
     //  calculate heart rate
     return MAX30102_calcHeartRate(sampleRate);
 }
 
-uint8_t MAX30102_getAvailableSampleCount() {
-    uint8_t readPtr = MAX30102_readReg(MAX30102_FIFO_RD_PTR_REG_ADDR);
-    uint8_t writePtr = MAX30102_readReg(MAX30102_FIFO_WR_PTR_REG_ADDR);
 
-    testBuffer[testBufferCounter].readPtr = readPtr;
-    testBuffer[testBufferCounter].writePtr = writePtr;
-    testBuffer[testBufferCounter].ofvCounter = MAX30102_readReg(MAX30102_OFV_COUNTER_REG_ADDR);
-
-    return writePtr - readPtr;
-}
-
-void MAX30102_getData(MAX30102_DataSample * buffer, uint16_t sampleAmount) {
-    uint16_t size = sampleAmount * 3;
-    HAL_I2C_Mem_Read(pI2C, MAX30102_READ_ADDR, MAX30102_FIFO_DATA_REG_ADDR, I2C_MEMADD_SIZE_8BIT, (uint8_t *) buffer, size, 10);
-    MAX30102_writeReg(MAX30102_FIFO_WR_PTR_REG_ADDR, 0x0U);
-    MAX30102_writeReg(MAX30102_FIFO_RD_PTR_REG_ADDR, 0x0U);
-}
 
 void MAX30102_smooth(uint16_t lastAddedSampleCount) {
+    uint8_t smoothingNumber = 5;
+    
+    MAX30102_SampleBuffer_resetTail();
+    MAX30102_SampleBuffer_reverseTail(lastAddedSampleCount + smoothingNumber);
 
-
+    for (int i = 0; i < smoothingNumber; i++) {
+        
+    }
 
 }
 
@@ -262,6 +254,26 @@ uint32_t MAX30102_sampleToInt(MAX30102_DataSample sample) {
     return ret;
 }
 
+uint8_t MAX30102_getAvailableSampleCount() {
+    uint8_t readPtr = MAX30102_readReg(MAX30102_FIFO_RD_PTR_REG_ADDR);
+    uint8_t writePtr = MAX30102_readReg(MAX30102_FIFO_WR_PTR_REG_ADDR);
+
+    // testBuffer[testBufferCounter].readPtr = readPtr;
+    // testBuffer[testBufferCounter].writePtr = writePtr;
+    // testBuffer[testBufferCounter].ofvCounter = MAX30102_readReg(MAX30102_OFV_COUNTER_REG_ADDR);
+
+    return writePtr - readPtr;
+}
+
+void MAX30102_getData(MAX30102_DataSample * buffer, uint16_t sampleAmount) {
+    uint16_t size = sampleAmount * 3;
+    HAL_I2C_Mem_Read(pI2C, MAX30102_READ_ADDR, MAX30102_FIFO_DATA_REG_ADDR, I2C_MEMADD_SIZE_8BIT, (uint8_t *) buffer, size, 10);
+    MAX30102_writeReg(MAX30102_FIFO_WR_PTR_REG_ADDR, 0x0U);
+    MAX30102_writeReg(MAX30102_FIFO_RD_PTR_REG_ADDR, 0x0U);
+}
+
+
+
 
 
 //  Read/Write helpers
@@ -308,6 +320,13 @@ uint32_t MAX30102_SampleBuffer_readTail() {
     return ret;
 }
 
+void MAX30102_SampleBuffer_setTail(uint32_t toSet) {
+    MAX30102_SampleBuffer.data[MAX30102_SampleBuffer.tail] = toSet;
+}
+
+/*
+*   set the tail back x places
+*/
 void MAX30102_SampleBuffer_reverseTail(uint16_t amount) {
     if (MAX30102_SampleBuffer.tail < amount) {
         amount -= MAX30102_SampleBuffer.tail;
@@ -315,4 +334,8 @@ void MAX30102_SampleBuffer_reverseTail(uint16_t amount) {
     } else {
         MAX30102_SampleBuffer.tail -= amount;
     }
+}
+
+uint32_t MAX30102_SampleBuffer_peek( void ) {
+    return MAX30102_SampleBuffer.data[MAX30102_SampleBuffer.tail];
 }
